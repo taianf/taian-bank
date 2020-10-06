@@ -1,15 +1,17 @@
 package br.com.taian.bank.api.model
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import java.time.*
+import javax.persistence.*
 
 @Entity
-class Client(@Id
-             @GeneratedValue
-             val id: Long = 0L,
-             val name: String = "",
-             val lastName: String = "",
-             val email: String = "",
-             val cnh: String = "",
-             val dob: String = "")
+data class Client(
+    @Id @GeneratedValue
+    val id: Long = 0L,
+    val name: String = "",
+    val lastName: String = "",
+    @Column(unique = true)
+    val email: String = "",
+    @Column(unique = true)
+    val cnh: String = "",
+    val dob: LocalDate = LocalDate.now(),
+)

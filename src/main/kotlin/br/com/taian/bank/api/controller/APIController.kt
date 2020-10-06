@@ -1,16 +1,15 @@
 package br.com.taian.bank.api.controller
 
-import br.com.taian.bank.api.model.Client
-import br.com.taian.bank.api.repository.ClientRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
+import br.com.taian.bank.api.model.*
+import br.com.taian.bank.api.repository.*
+import br.com.taian.bank.api.validation.*
+import org.springframework.beans.factory.annotation.*
+import org.springframework.http.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("api")
-class NoteController {
+class APIController {
 
     @Autowired
     lateinit var clientRepository: ClientRepository
@@ -21,11 +20,19 @@ class NoteController {
     }
 
     @PostMapping
-    fun add(@RequestBody client: Client): ResponseEntity<Client> {
-        val save = clientRepository.save(client)
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .contentType(MediaType.TEXT_PLAIN)
-                .body(save)
+    fun add(@RequestBody client: Client): ResponseEntity<Response> {
+        val validClient: ValidatedClient = validateClient(client, clientRepository)
+        return if (validClient.success) {
+            clientRepository.save(client)
+            ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.LOCATION, "location")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Response(client.id, null))
+        } else {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Response(null, validClient.invalidFields))
+        }
     }
 
 }
