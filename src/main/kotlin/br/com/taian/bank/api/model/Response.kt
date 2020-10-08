@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.*
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Response(
-    var id: Long?,
-    var invalidFields: MutableMap<String, String>?,
+    var id: Long? = null,
+    var invalidFields: Map<String, String> = mapOf(),
 )

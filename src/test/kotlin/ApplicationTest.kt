@@ -31,7 +31,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(1)
     fun `Assert empty database`() {
-        val entity = restTemplate.getForEntity<String>("/api")
+        val entity = restTemplate.getForEntity<String>("/api/list")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).isEqualTo("[]")
     }
@@ -49,7 +49,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
             }
         """.trimIndent()
         val request = HttpEntity<String>(client, headers)
-        val entity = restTemplate.postForEntity<String>("/api", request)
+        val entity = restTemplate.postForEntity<String>("/api/create", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(entity.body).isEqualTo("""{"id":1}""")
     }
@@ -57,7 +57,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(3)
     fun `Assert first client in database`() {
-        val entity = restTemplate.getForEntity<String>("/api")
+        val entity = restTemplate.getForEntity<String>("/api/list")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).isEqualTo("""[{"id":1,"name":"teste","lastName":"teste","email":"teste@teste.com","cnh":"07021871297","dob":"2000-01-01"}]""")
     }
@@ -75,7 +75,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
             }
         """.trimIndent()
         val request = HttpEntity<String>(client, headers)
-        val entity = restTemplate.postForEntity<String>("/api", request)
+        val entity = restTemplate.postForEntity<String>("/api/create", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).isEqualTo("""{"invalidFields":{"email":"Email already in database","cnh":"CNH already in database"}}""")
     }

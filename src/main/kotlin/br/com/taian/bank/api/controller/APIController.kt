@@ -14,25 +14,54 @@ class APIController {
     @Autowired
     lateinit var clientRepository: ClientRepository
 
-    @GetMapping
+    @GetMapping("/list")
     fun list(): List<Client> {
         return clientRepository.findAll().toList()
     }
 
-    @PostMapping
-    fun add(@RequestBody client: Client): ResponseEntity<Response> {
-        val validClient: ValidatedClient = validateClient(client, clientRepository)
-        return if (validClient.success) {
+    @PostMapping("/create")
+    fun createClient(@RequestBody client: Client): ResponseEntity<Response> {
+        val validatedClient = validateClient(client, clientRepository)
+        return if (validatedClient.success) {
             clientRepository.save(client)
             ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, "location")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Response(client.id, null))
+                .body(Response(id = client.id))
         } else {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Response(null, validClient.invalidFields))
+                .body(Response(invalidFields = validatedClient.invalidFields))
         }
     }
+
+    @PostMapping("/addAddress")
+    fun addAddress(@RequestBody address: Address): ResponseEntity<Response> {
+        val validatedAddress = validateAddress(address)
+        val response: ResponseEntity<Response>
+        if (validatedAddress.success) {
+            val optionalClient = clientRepository.findById(address.id)
+            val client = optionalClient.orElse(null)
+            if (client != null) {
+                client.address = address
+                clientRepository.save(client)
+                response = ResponseEntity.status(HttpStatus.CREATED)
+                    .header(HttpHeaders.LOCATION, "location")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Response(id = client.id))
+
+            } else {
+                response = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Response(invalidFields = mapOf("id" to "id not valid")))
+            }
+        } else {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Response(invalidFields = validatedAddress.invalidFields))
+        }
+        return response
+    }
+
 
 }
