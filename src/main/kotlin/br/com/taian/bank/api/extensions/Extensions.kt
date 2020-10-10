@@ -1,5 +1,6 @@
-package br.com.taian.bank.api.model
+package br.com.taian.bank.api.extensions
 
+import br.com.taian.bank.api.model.*
 import org.springframework.web.multipart.*
 
 internal fun MultipartFile.toPersistedImage(): PersistedImage =

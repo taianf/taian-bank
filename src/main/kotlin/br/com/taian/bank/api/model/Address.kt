@@ -6,6 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "address")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties("id")
 data class Address(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -24,7 +24,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
         @AfterAll
         @JvmStatic
         fun cleanTests() {
-//            headers.contentType = MediaType.APPLICATION_JSON
+            // Nada por enquanto
         }
 
     }

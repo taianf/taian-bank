@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "Get clients",
+      "name": "List clients",
       "request": {
         "method": "GET",
         "header": [],
@@ -20,6 +20,27 @@
           "path": [
             "api",
             "list"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get clients",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/client/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "client",
+            "1"
           ]
         }
       },
@@ -61,7 +82,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"id\": 2\r\n}",
+          "raw": "{\r\n    \"zip\": \"41770-395\",\r\n    \"street\": \"Rua Correta\",\r\n    \"area\": \"Válida\",\r\n    \"opt\": \"Ap 999\",\r\n    \"city\": \"Salvador\",\r\n    \"state\": \"BA\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -69,7 +90,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/api/addAddress",
+          "raw": "http://localhost:8080/api/client/1/addAddress",
           "protocol": "http",
           "host": [
             "localhost"
@@ -77,6 +98,8 @@
           "port": "8080",
           "path": [
             "api",
+            "client",
+            "1",
             "addAddress"
           ]
         }

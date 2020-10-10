@@ -4,9 +4,13 @@ spring:
     username: sa
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
   jpa:
-    properties.hibernate.dialect: org.hibernate.dialect.HSQLDialect
-    hibernate.ddl-auto: update
-  http:
-    multipart:
-      max-file-size: 25MB
-      max-request-size: 25MB
+    properties.hibernate:
+      dialect: org.hibernate.dialect.HSQLDialect
+      ddl-auto: update
+  http.multipart:
+    max-file-size: 25MB
+    max-request-size: 25MB
+
+logging.level.org.hibernate:
+  SQL: DEBUG
+  type.descriptor.sql.BasicBinder: TRACE
