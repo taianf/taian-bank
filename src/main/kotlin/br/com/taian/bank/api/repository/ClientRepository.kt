@@ -5,5 +5,5 @@ import org.springframework.data.repository.*
 
 interface ClientRepository : CrudRepository<Client, Long> {
     fun findByEmail(email: String): Client?
-    fun findByCnh(email: String): Client?
+    fun findByCpf(email: String): Client?
 }

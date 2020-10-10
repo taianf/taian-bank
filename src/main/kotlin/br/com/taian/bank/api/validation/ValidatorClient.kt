@@ -11,7 +11,7 @@ internal fun validateClient(client: Client, clientRepository: ClientRepository):
     validateClientName(client, invalidFields)
     validateClientLastName(client, invalidFields)
     validateClientEmail(client, clientRepository, invalidFields)
-    validateClientCNH(client, clientRepository, invalidFields)
+    validateClientCpf(client, clientRepository, invalidFields)
     validateClientDOB(client, invalidFields)
     return ValidatedClient(invalidFields)
 }
@@ -51,17 +51,17 @@ private fun validateClientEmail(
     }
 }
 
-private fun validateClientCNH(
+private fun validateClientCpf(
     client: Client,
     clientRepository: ClientRepository,
     invalidFields: MutableMap<String, String>,
 ) {
-    if (!validateCNH(client.cnh)) {
-        invalidFields["cnh"] = ValidationConstants.INVALID_CNH
+    if (!ValidaCPF.isCPF(client.cpf)) {
+        invalidFields["cpf"] = ValidationConstants.INVALID_CPF
     } else {
-        val clientByCnh: Client? = clientRepository.findByCnh(client.cnh)
-        if (clientByCnh != null) {
-            invalidFields["cnh"] = ValidationConstants.USED_CNH
+        val clientByCpf: Client? = clientRepository.findByCpf(client.cpf)
+        if (clientByCpf != null) {
+            invalidFields["cpf"] = ValidationConstants.USED_CPF
         }
     }
 }

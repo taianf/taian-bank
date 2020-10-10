@@ -7,8 +7,8 @@ object ValidationConstants {
     const val EMPTY_LAST_NAME = "Empty last name"
     const val INVALID_EMAIL = "Invalid email"
     const val USED_EMAIL = "Email already in database"
-    const val INVALID_CNH = "Invalid CNH"
-    const val USED_CNH = "CNH already in database"
+    const val INVALID_CPF = "Invalid CPF"
+    const val USED_CPF = "CPF already in database"
     const val INVALID_DOB = "Invalid Date of Birth"
 
     const val INVALID_ZIP = "Invalid ZIP"

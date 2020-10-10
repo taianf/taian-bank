@@ -45,7 +45,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "teste",
                 "lastName": "teste",
                 "email": "teste@teste.com",
-                "cnh": "07021871297",
+                "cpf": "925.567.530-30",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
@@ -61,7 +61,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     fun `Assert first client in database`() {
         val entity = restTemplate.getForEntity<String>("/api/client/1")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).isEqualTo("""{"id":1,"name":"teste","lastName":"teste","email":"teste@teste.com","cnh":"07021871297","dob":"2000-01-01"}""")
+        assertThat(entity.body).isEqualTo("""{"id":1,"name":"teste","lastName":"teste","email":"teste@teste.com","cpf":"925.567.530-30","dob":"2000-01-01"}""")
     }
 
     @Test
@@ -72,14 +72,14 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "teste",
                 "lastName": "teste",
                 "email": "teste@teste.com",
-                "cnh": "07021871297",
+                "cpf": "925.567.530-30",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
         val request = HttpEntity<String>(client, headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(entity.body).isEqualTo("""{"invalidFields":{"email":"Email already in database","cnh":"CNH already in database"}}""")
+        assertThat(entity.body).isEqualTo("""{"invalidFields":{"email":"Email already in database","cpf":"CPF already in database"}}""")
     }
 
     @Test
@@ -98,7 +98,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "",
                 "lastName": "teste",
                 "email": "teste@teste.com",
-                "cnh": "07021871297",
+                "cpf": "925.567.530-30",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
@@ -116,7 +116,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "teste",
                 "lastName": "",
                 "email": "teste@teste.com",
-                "cnh": "07021871297",
+                "cpf": "925.567.530-30",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
@@ -134,7 +134,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "teste",
                 "lastName": "teste",
                 "email": "teste.com",
-                "cnh": "07021871297",
+                "cpf": "925.567.530-30",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
@@ -146,20 +146,20 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
 
     @Test
     @Order(9)
-    fun `Assert invalid client cnh`() {
+    fun `Assert invalid client cpf`() {
         val client: String = """
             {
                 "name": "teste",
                 "lastName": "teste",
                 "email": "teste.com",
-                "cnh": "11111111111",
+                "cpf": "11111111111",
                 "dob": "2000-01-01"
             }
         """.trimIndent()
         val request = HttpEntity<String>(client, headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(entity.body).contains(ValidationConstants.INVALID_CNH)
+        assertThat(entity.body).contains(ValidationConstants.INVALID_CPF)
     }
 
     @Test
@@ -170,7 +170,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "name": "teste",
                 "lastName": "teste",
                 "email": "teste.com",
-                "cnh": "11111111111",
+                "cpf": "11111111111",
                 "dob": "2100-01-01"
             }
         """.trimIndent()
@@ -338,7 +338,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     fun `Assert client with address in database`() {
         val entity = restTemplate.getForEntity<String>("/api/client/1")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(entity.body).isEqualTo("""{"id":1,"name":"teste","lastName":"teste","email":"teste@teste.com","cnh":"07021871297","dob":"2000-01-01","address":{"id":2,"zip":"41770-395","street":"Rua Correta","area":"Válida","opt":"Ap 999","city":"Salvador","state":"BA"}}""")
+        assertThat(entity.body).contains("Rua Correta")
     }
 
 }

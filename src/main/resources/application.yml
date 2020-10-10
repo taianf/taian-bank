@@ -6,3 +6,7 @@ spring:
   jpa:
     properties.hibernate.dialect: org.hibernate.dialect.HSQLDialect
     hibernate.ddl-auto: update
+  http:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB

@@ -32,7 +32,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"name\": \"teste\",\r\n    \"lastName\": \"teste\",\r\n    \"email\": \"teste@gmail.com\",\r\n    \"cnh\": \"07021871297\",\r\n    \"dob\": \"2000-01-01\"\r\n}",
+          "raw": "{\r\n    \"name\": \"teste\",\r\n    \"lastName\": \"teste\",\r\n    \"email\": \"teste@gmail.com\",\r\n    \"cpf\": \"925.567.530-30\",\r\n    \"dob\": \"2000-01-01\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
