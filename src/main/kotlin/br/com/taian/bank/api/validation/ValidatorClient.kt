@@ -1,5 +1,6 @@
 package br.com.taian.bank.api.validation
 
+import br.com.taian.bank.api.constants.*
 import br.com.taian.bank.api.model.*
 import br.com.taian.bank.api.repository.*
 import org.apache.commons.validator.routines.*
@@ -20,7 +21,7 @@ private fun validateClientName(
     invalidFields: MutableMap<String, String>,
 ) {
     if (client.name.isBlank()) {
-        invalidFields["name"] = "Empty name"
+        invalidFields["name"] = ValidationConstants.EMPTY_NAME
     }
 }
 
@@ -29,7 +30,7 @@ private fun validateClientLastName(
     invalidFields: MutableMap<String, String>,
 ) {
     if (client.lastName.isBlank()) {
-        invalidFields["lastName"] = "Empty last name"
+        invalidFields["lastName"] = ValidationConstants.EMPTY_LAST_NAME
     }
 }
 
@@ -41,11 +42,11 @@ private fun validateClientEmail(
     val emailValidator = EmailValidator.getInstance()
     val valid = emailValidator.isValid(client.email)
     if (!valid) {
-        invalidFields["email"] = "Invalid email"
+        invalidFields["email"] = ValidationConstants.INVALID_EMAIL
     } else {
         val clientByEmail: Client? = clientRepository.findByEmail(client.email)
         if (clientByEmail != null) {
-            invalidFields["email"] = "Email already in database"
+            invalidFields["email"] = ValidationConstants.USED_EMAIL
         }
     }
 }
@@ -56,11 +57,11 @@ private fun validateClientCNH(
     invalidFields: MutableMap<String, String>,
 ) {
     if (!validateCNH(client.cnh)) {
-        invalidFields["cnh"] = "Invalid CNH"
+        invalidFields["cnh"] = ValidationConstants.INVALID_CNH
     } else {
         val clientByCnh: Client? = clientRepository.findByCnh(client.cnh)
         if (clientByCnh != null) {
-            invalidFields["cnh"] = "CNH already in database"
+            invalidFields["cnh"] = ValidationConstants.USED_CNH
         }
     }
 }
@@ -70,6 +71,6 @@ private fun validateClientDOB(
     invalidFields: MutableMap<String, String>,
 ) {
     if (client.dob.isAfter(LocalDate.now().minusYears(18))) {
-        invalidFields["dob"] = "Invalid Date of Birth"
+        invalidFields["dob"] = ValidationConstants.INVALID_DOB
     }
 }

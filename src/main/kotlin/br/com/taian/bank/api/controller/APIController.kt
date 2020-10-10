@@ -25,7 +25,7 @@ class APIController {
         return if (validatedClient.success) {
             clientRepository.save(client)
             ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.LOCATION, "location")
+                .header(HttpHeaders.LOCATION, "/client/${client.id}/addAddress")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Response(id = client.id))
         } else {
@@ -35,21 +35,37 @@ class APIController {
         }
     }
 
-    @PostMapping("/addAddress")
-    fun addAddress(@RequestBody address: Address): ResponseEntity<Response> {
+    @GetMapping("/client/{id}")
+    fun getClient(@PathVariable(value = "id") id: Long): ResponseEntity<Client> {
+        val client = clientRepository.findById(id).orElse(null)
+        return if (client == null) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(client)
+        } else {
+            ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(client)
+        }
+    }
+
+    @PostMapping("/client/{id}/addAddress")
+    fun addAddress(
+        @PathVariable(value = "id") id: Long,
+        @RequestBody address: Address
+    ): ResponseEntity<Response> {
         val validatedAddress = validateAddress(address)
         val response: ResponseEntity<Response>
         if (validatedAddress.success) {
-            val optionalClient = clientRepository.findById(address.id)
+            val optionalClient = clientRepository.findById(id)
             val client = optionalClient.orElse(null)
             if (client != null) {
                 client.address = address
                 clientRepository.save(client)
                 response = ResponseEntity.status(HttpStatus.CREATED)
-                    .header(HttpHeaders.LOCATION, "location")
+                    .header(HttpHeaders.LOCATION, "/client/$id/sendDocs")
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(Response(id = client.id))
-
             } else {
                 response = ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -62,6 +78,5 @@ class APIController {
         }
         return response
     }
-
 
 }

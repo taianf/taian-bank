@@ -10,10 +10,10 @@ data class Address(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0L,
-    val cep: String = "",
-    val rua: String = "",
-    val bairro: String = "",
-    val complemento: String = "",
-    val cidade: String = "",
-    val estado: String = "",
+    val zip: String = "",
+    val street: String = "",
+    val area: String = "",
+    val opt: String = "",
+    val city: String = "",
+    val state: String = "",
 )
