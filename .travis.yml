@@ -9,8 +9,6 @@ jobs:
       jdk: openjdk8
     - os: linux
       jdk: openjdk11
-    - os: linux
-      jdk: openjdk12
 
 script: ./gradlew clean check --info --stacktrace --console=plain --max-workers=1 --no-daemon --build-cache -Dkotlin.colors.enabled=false
 

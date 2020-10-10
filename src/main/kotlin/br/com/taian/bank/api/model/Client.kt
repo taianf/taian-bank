@@ -1,6 +1,9 @@
 package br.com.taian.bank.api.model
 
 import com.fasterxml.jackson.annotation.*
+import com.fasterxml.jackson.databind.annotation.*
+import com.fasterxml.jackson.datatype.jsr310.deser.*
+import com.fasterxml.jackson.datatype.jsr310.ser.*
 import java.time.*
 import javax.persistence.*
 
@@ -18,6 +21,9 @@ data class Client(
     val email: String = "",
     @Column(unique = true)
     val cpf: String = "",
+    @JsonDeserialize(using = LocalDateDeserializer::class)
+    @JsonSerialize(using = LocalDateSerializer::class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val dob: LocalDate = LocalDate.now(),
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")

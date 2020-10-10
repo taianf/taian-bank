@@ -3,6 +3,7 @@ package br.com.taian.bank.api.controller
 import br.com.taian.bank.api.model.*
 import br.com.taian.bank.api.repository.*
 import br.com.taian.bank.api.validation.*
+import io.swagger.annotations.*
 import org.springframework.beans.factory.annotation.*
 import org.springframework.http.*
 import org.springframework.web.bind.annotation.*
@@ -14,12 +15,14 @@ class APIController {
     @Autowired
     lateinit var clientRepository: ClientRepository
 
-    @GetMapping("/list")
+    @ApiOperation(value = "Lists all clients")
+    @GetMapping("/list", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun list(): List<Client> {
         return clientRepository.findAll().toList()
     }
 
-    @PostMapping("/create")
+    @ApiOperation(value = "Create a client")
+    @PostMapping("/create", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun createClient(@RequestBody client: Client): ResponseEntity<Response> {
         val validatedClient = validateClient(client, clientRepository)
         return if (validatedClient.success) {
@@ -35,7 +38,8 @@ class APIController {
         }
     }
 
-    @GetMapping("/client/{id}")
+    @ApiOperation(value = "Return a client info")
+    @GetMapping("/client/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getClient(@PathVariable(value = "id") id: Long): ResponseEntity<Client> {
         val client = clientRepository.findById(id).orElse(null)
         return if (client == null) {
@@ -49,7 +53,8 @@ class APIController {
         }
     }
 
-    @PostMapping("/client/{id}/addAddress")
+    @ApiOperation(value = "Add address to a client")
+    @PostMapping("/client/{id}/addAddress", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun addAddress(
         @PathVariable(value = "id") id: Long,
         @RequestBody address: Address

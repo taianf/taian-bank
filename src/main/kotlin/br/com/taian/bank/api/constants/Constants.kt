@@ -1,8 +1,9 @@
 package br.com.taian.bank.api.constants
 
+// Maybe move these constants to a conf file or a database
+
 object ValidationConstants {
 
-    // Maybe move these constants to a conf file or a database
     const val EMPTY_NAME = "Empty name"
     const val EMPTY_LAST_NAME = "Empty last name"
     const val INVALID_EMAIL = "Invalid email"
