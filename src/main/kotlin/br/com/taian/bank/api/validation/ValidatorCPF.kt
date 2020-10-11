@@ -37,8 +37,8 @@ object ValidaCPF {
                 // por exemplo, transforma o caractere '0' no inteiro 0
                 // (48 eh a posicao de '0' na tabela ASCII)
                 num = (cpf[i].toInt() - 48)
-                sm = sm + num * peso
-                peso = peso - 1
+                sm += num * peso
+                peso -= 1
                 i++
             }
             r = 11 - sm % 11
@@ -50,8 +50,8 @@ object ValidaCPF {
             i = 0
             while (i < 10) {
                 num = (cpf[i].toInt() - 48)
-                sm = sm + num * peso
-                peso = peso - 1
+                sm += num * peso
+                peso -= 1
                 i++
             }
             r = 11 - sm % 11

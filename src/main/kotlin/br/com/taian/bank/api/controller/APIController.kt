@@ -120,4 +120,58 @@ class APIController {
         return response
     }
 
+    @ApiOperation(value = "View account proposal")
+    @GetMapping("/client/{id}/acceptAccount", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun acceptAccountView(
+        @PathVariable(value = "id") id: Long
+    ): ResponseEntity<Client> {
+        val client = clientRepository.findByIdOrNull(id)
+        return when {
+            client == null -> {
+                ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(client)
+            }
+            client.address == null || client.document == null -> {
+                ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(null)
+            }
+            else -> {
+                ResponseEntity.status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(client)
+            }
+        }
+    }
+
+    @ApiOperation(value = "Accept account proposal")
+    @PostMapping("/client/{id}/acceptAccount", produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun acceptAccountConfirm(
+        @PathVariable(value = "id") id: Long,
+        @RequestBody proposalAcceptation: ProposalAcceptation
+    ): ResponseEntity<Response> {
+        return when (val client = clientRepository.findByIdOrNull(id)) {
+            null -> {
+                ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Response(answer = "Client not found"))
+            }
+            else -> {
+                val acceptation = proposalAcceptation.acceptation
+                client.proposalAccepted = acceptation
+                clientRepository.save(client)
+                if (acceptation) {
+                    ResponseEntity.status(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(Response(answer = "Email with account creation will be sent soon"))
+                } else {
+                    ResponseEntity.status(HttpStatus.OK)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(Response(answer = "Account proposal in stand by"))
+                }
+            }
+        }
+    }
+
 }

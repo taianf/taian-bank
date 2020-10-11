@@ -6,4 +6,5 @@ import com.fasterxml.jackson.annotation.*
 data class Response(
     var id: Long? = null,
     var invalidFields: Map<String, String> = mapOf(),
+    var answer: String = "",
 )

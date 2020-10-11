@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "address")
+@Table(name = "document")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties("id")
 data class Document(

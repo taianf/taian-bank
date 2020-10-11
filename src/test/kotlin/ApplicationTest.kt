@@ -385,6 +385,22 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
 
     @Test
     @Order(23)
+    fun `Assert accept account unavaible`() {
+        val entity = restTemplate.getForEntity<String>("/api/client/1/acceptAccount")
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        assertThat(entity.body).isEqualTo(null)
+    }
+
+    @Test
+    @Order(24)
+    fun `Assert accept account not found`() {
+        val entity = restTemplate.getForEntity<String>("/api/client/-1/acceptAccount")
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(entity.body).isEqualTo(null)
+    }
+
+    @Test
+    @Order(25)
     fun `Assert valid document add`() {
         val document: String = """
             {
@@ -396,6 +412,59 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(entity.body).isEqualTo("""{"id":1}""")
         assertThat(entity.headers.location?.path).isEqualTo("/client/1/acceptAccount")
+    }
+
+    @Test
+    @Order(26)
+    fun `Assert valid get accept account`() {
+        val entity = restTemplate.getForEntity<String>("/api/client/1/acceptAccount")
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(entity.body).isEqualTo("""{"id":1,"name":"teste","lastName":"teste","email":"teste@teste.com","cpf":"925.567.530-30","dob":"2000-01-01","address":{"zip":"41770-395","street":"Rua Correta","area":"Válida","opt":"Ap 999","city":"Salvador","state":"BA"},"document":{"url":"https://img.r7.com/images/novo-rg-sp-19082019164048588"}}""")
+    }
+
+    @Test
+    @Order(27)
+    fun `Assert not found proposal`() {
+        val proposalAcceptation: String = """
+            {
+                "id": 1,
+                "acceptation": true
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(proposalAcceptation, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/-1/acceptAccount", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(entity.body).isEqualTo("""{"answer":"Client not found"}""")
+    }
+
+    @Test
+    @Order(28)
+    fun `Assert positive proposal`() {
+        val proposalAcceptation: String = """
+            {
+                "id": 1,
+                "acceptation": true
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(proposalAcceptation, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/1/acceptAccount", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(entity.body).isEqualTo("""{"answer":"Email with account creation will be sent soon"}""")
+    }
+
+    @Test
+    @Order(29)
+    fun `Assert negative proposal`() {
+        val document: String = """
+            {
+                "id": 1,
+                "acceptation": false
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(document, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/1/acceptAccount", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(entity.body).isEqualTo("""{"answer":"Account proposal in stand by"}""")
     }
 
 }

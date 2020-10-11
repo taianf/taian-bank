@@ -30,4 +30,5 @@ data class Client(
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     var document: Document? = null,
+    var proposalAccepted: Boolean? = null,
 )
