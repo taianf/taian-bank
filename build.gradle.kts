@@ -22,6 +22,7 @@ repositories {
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("com.github.kittinunf.fuel:fuel:2.3.0")
     implementation("commons-validator:commons-validator:1.7")
     implementation("io.springfox:springfox-swagger-ui:2.9.2")
     implementation("io.springfox:springfox-swagger2:2.9.2")

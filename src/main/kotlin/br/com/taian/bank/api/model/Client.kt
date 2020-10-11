@@ -10,7 +10,6 @@ import javax.persistence.*
 @Entity
 @Table(name = "client")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonIgnoreProperties("document")
 data class Client(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,5 +29,5 @@ data class Client(
     var address: Address? = null,
     @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
-    var document: PersistedImage? = null,
+    var document: Document? = null,
 )

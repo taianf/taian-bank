@@ -19,4 +19,6 @@ object ValidationConstants {
     const val EMPTY_CITY = "Empty city"
     const val EMPTY_STATE = "Empty state"
 
+    const val INVALID_URL = "Invalid URL"
+
 }

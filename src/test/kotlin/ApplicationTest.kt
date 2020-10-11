@@ -183,7 +183,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(11)
     fun `Assert invalid address zip`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770395",
                 "street": "Rua Correta",
@@ -193,7 +193,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.INVALID_ZIP)
@@ -202,7 +202,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(12)
     fun `Assert invalid address street`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "",
@@ -212,7 +212,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.EMPTY_STREET)
@@ -221,7 +221,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(13)
     fun `Assert invalid address area`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -231,7 +231,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.EMPTY_AREA)
@@ -240,7 +240,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(14)
     fun `Assert invalid address opt`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -250,7 +250,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.EMPTY_OPT)
@@ -259,7 +259,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(15)
     fun `Assert invalid address city`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -269,7 +269,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.EMPTY_CITY)
@@ -278,7 +278,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(16)
     fun `Assert invalid address state`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -288,7 +288,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": ""
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).contains(ValidationConstants.EMPTY_STATE)
@@ -297,7 +297,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Test
     @Order(17)
     fun `Assert valid address creation in wrong id`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -307,7 +307,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/2/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(entity.body).isEqualTo("""{"invalidFields":{"id":"id not valid"}}""")
@@ -315,8 +315,22 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
 
     @Test
     @Order(18)
+    fun `Assert document without address`() {
+        val document: String = """
+            {
+                "url": "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(document, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+        assertThat(entity.body).isEqualTo("""{"invalidFields":{"address":"address not set"}}""")
+    }
+
+    @Test
+    @Order(19)
     fun `Assert valid address creation`() {
-        val client: String = """
+        val address: String = """
             {
                 "zip": "41770-395",
                 "street": "Rua Correta",
@@ -326,19 +340,62 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
                 "state": "BA"
             }
         """.trimIndent()
-        val request = HttpEntity<String>(client, headers)
+        val request = HttpEntity<String>(address, headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
         assertThat(entity.body).isEqualTo("""{"id":1}""")
-        assertThat(entity.headers.location?.path).isEqualTo("/client/1/sendDocs")
+        assertThat(entity.headers.location?.path).isEqualTo("/client/1/addDocs")
     }
 
     @Test
-    @Order(19)
+    @Order(20)
     fun `Assert client with address in database`() {
         val entity = restTemplate.getForEntity<String>("/api/client/1")
         assertThat(entity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(entity.body).contains("Rua Correta")
+    }
+
+    @Test
+    @Order(21)
+    fun `Assert invalid document add`() {
+        val document: String = """
+            {
+                "url": "http://www.teste.com/"
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(document, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        assertThat(entity.body).isEqualTo("""{"invalidFields":{"url":"Invalid URL"}}""")
+    }
+
+    @Test
+    @Order(22)
+    fun `Assert id not found`() {
+        val document: String = """
+            {
+                "url": "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(document, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/-1/addDocs", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
+        assertThat(entity.body).isEqualTo("""{"invalidFields":{"id":"id not found"}}""")
+    }
+
+    @Test
+    @Order(23)
+    fun `Assert valid document add`() {
+        val document: String = """
+            {
+                "url": "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            }
+        """.trimIndent()
+        val request = HttpEntity<String>(document, headers)
+        val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
+        assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
+        assertThat(entity.body).isEqualTo("""{"id":1}""")
+        assertThat(entity.headers.location?.path).isEqualTo("/client/1/acceptAccount")
     }
 
 }

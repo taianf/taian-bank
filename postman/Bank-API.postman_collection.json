@@ -105,6 +105,37 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Add document",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"url\": \"https://img.r7.com/images/novo-rg-sp-19082019164048588\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/client/1/addDocs",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "client",
+            "1",
+            "addDocs"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "protocolProfileBehavior": {}
