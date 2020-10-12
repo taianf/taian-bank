@@ -37,4 +37,5 @@ data class Client(
     @JoinColumn(name = "document_id")
     var document: Document? = null,
     var proposalAccepted: Boolean? = null,
+    var proposalConfirmed: Boolean? = null,
 )

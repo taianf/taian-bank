@@ -1,5 +1,6 @@
-package br.com.taian.bank.api.swagger
+package br.com.taian.bank.api.config
 
+import org.springframework.beans.factory.annotation.*
 import org.springframework.context.annotation.*
 import org.springframework.web.servlet.config.annotation.*
 import springfox.documentation.builders.*
@@ -10,7 +11,14 @@ import springfox.documentation.swagger2.annotations.*
 
 @Configuration
 @EnableSwagger2
-class SwaggerConfig : WebMvcConfigurationSupport() {
+class AppConfig : WebMvcConfigurationSupport() {
+
+    @Autowired
+    lateinit var emailInterceptor: EmailInterceptor
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(emailInterceptor)
+    }
 
     @Bean
     fun swaggerUI(): Docket {

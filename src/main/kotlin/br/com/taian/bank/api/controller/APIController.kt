@@ -32,7 +32,7 @@ class APIController {
             ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.LOCATION, "/client/${client.id}/addAddress")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Response(id = client.id))
+                .body(Response(answer = "Created client with ${client.id}"))
         } else {
             ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ class APIController {
                 ResponseEntity.status(HttpStatus.CREATED)
                     .header(HttpHeaders.LOCATION, "/client/$id/addDocs")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Response(id = client.id))
+                    .body(Response(answer = "Added address to client with ${client.id}"))
             } else {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class APIController {
                 ResponseEntity.status(HttpStatus.CREATED)
                     .header(HttpHeaders.LOCATION, "/client/$id/acceptAccount")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Response(id = client.id))
+                    .body(Response(answer = "Added document to client with ${client.id}"))
             }
         }
     }
@@ -163,10 +163,12 @@ class APIController {
                 if (acceptation) {
                     ResponseEntity.status(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Proposal-Acceptation", "$acceptation")
                         .body(Response(answer = "Email with account creation will be sent soon"))
                 } else {
                     ResponseEntity.status(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .header("Proposal-Acceptation", "$acceptation")
                         .body(Response(answer = "Account proposal in stand by"))
                 }
             }

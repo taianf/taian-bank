@@ -58,7 +58,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
-        assertThat(entity.body).isEqualTo("""{"id":1}""")
+        assertThat(entity.body).isEqualTo("""{"answer":"Created client with 1"}""")
         assertThat(entity.headers.location?.path).isEqualTo("/client/1/addAddress")
     }
 
@@ -319,7 +319,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
-        assertThat(entity.body).isEqualTo("""{"id":1}""")
+        assertThat(entity.body).isEqualTo("""{"answer":"Added address to client with 1"}""")
         assertThat(entity.headers.location?.path).isEqualTo("/client/1/addDocs")
     }
 
@@ -380,7 +380,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
         val request = HttpEntity<String>(mapper.writeValueAsString(document), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
         assertThat(entity.statusCode).isEqualTo(HttpStatus.CREATED)
-        assertThat(entity.body).isEqualTo("""{"id":1}""")
+        assertThat(entity.body).isEqualTo("""{"answer":"Added document to client with 1"}""")
         assertThat(entity.headers.location?.path).isEqualTo("/client/1/acceptAccount")
     }
 
