@@ -126,17 +126,101 @@
           "host": [
             "localhost"
           ],
-          "port": "8080",
-          "path": [
-            "api",
-            "client",
-            "1",
-            "addDocs"
-          ]
-        }
-      },
-      "response": []
-    }
+			"port": "8080",
+			"path": [
+				"api",
+				"client",
+				"1",
+				"addDocs"
+			]
+		}
+	  },
+		"response": []
+	},
+	  {
+		  "name": "Get Accept Account",
+		  "request": {
+			  "method": "GET",
+			  "header": [],
+			  "url": {
+				  "raw": "http://localhost:8080/api/client/1/acceptAccount",
+				  "protocol": "http",
+				  "host": [
+					  "localhost"
+				  ],
+				  "port": "8080",
+				  "path": [
+					  "api",
+					  "client",
+					  "1",
+					  "acceptAccount"
+				  ]
+			  }
+		  },
+		  "response": []
+	  },
+	  {
+		  "name": "Send Positive Accept Account",
+		  "request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				  "mode": "raw",
+				  "raw": "{\r\n    \"id\": 1,\r\n    \"acceptation\": true\r\n}",
+				  "options": {
+					  "raw": {
+						  "language": "json"
+					  }
+				  }
+			  },
+			  "url": {
+				  "raw": "http://localhost:8080/api/client/1/acceptAccount",
+				  "protocol": "http",
+				  "host": [
+					  "localhost"
+				  ],
+				  "port": "8080",
+				  "path": [
+					  "api",
+					  "client",
+					  "1",
+					  "acceptAccount"
+				  ]
+			  }
+		  },
+		  "response": []
+	  },
+	  {
+		  "name": "Send Negative Accept Account",
+		  "request": {
+			  "method": "POST",
+			  "header": [],
+			  "body": {
+				  "mode": "raw",
+				  "raw": "{\r\n    \"id\": 1,\r\n    \"acceptation\": false\r\n}",
+				  "options": {
+					  "raw": {
+						  "language": "json"
+					  }
+				  }
+			  },
+			  "url": {
+				  "raw": "http://localhost:8080/api/client/1/acceptAccount",
+				  "protocol": "http",
+				  "host": [
+					  "localhost"
+				  ],
+				  "port": "8080",
+				  "path": [
+					  "api",
+					  "client",
+					  "1",
+					  "acceptAccount"
+				  ]
+			  }
+		  },
+		  "response": []
+	  }
   ],
   "protocolProfileBehavior": {}
 }
