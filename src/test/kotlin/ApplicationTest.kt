@@ -2,6 +2,7 @@ package br.com.taian.bank.api
 
 import br.com.taian.bank.api.constants.*
 import br.com.taian.bank.api.model.*
+import br.com.taian.bank.api.model.entities.*
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.jsr310.*
 import org.assertj.core.api.Assertions.*
@@ -48,12 +49,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(2)
     fun `Assert client creation`() {
         val client = Client(
-            1,
-            "teste",
-            "teste",
-            "teste@teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2000-01-01"),
+            name = "teste",
+            lastName = "teste",
+            email = "teste@teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -74,12 +74,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(4)
     fun `Assert failed duplicate client in database`() {
         val client = Client(
-            1,
-            "teste",
-            "teste",
-            "teste@teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2000-01-01"),
+            name = "teste",
+            lastName = "teste",
+            email = "teste@teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -99,12 +98,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(6)
     fun `Assert invalid client name`() {
         val client = Client(
-            1,
-            "",
-            "teste",
-            "teste@teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2000-01-01"),
+            name = "",
+            lastName = "teste",
+            email = "teste@teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -116,12 +114,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(7)
     fun `Assert invalid client lastName`() {
         val client = Client(
-            1,
-            "teste",
-            "",
-            "teste@teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2000-01-01"),
+            name = "teste",
+            lastName = "",
+            email = "teste@teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -133,12 +130,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(8)
     fun `Assert invalid client email`() {
         val client = Client(
-            1,
-            "teste",
-            "teste",
-            "teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2000-01-01"),
+            name = "teste",
+            lastName = "teste",
+            email = "teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -150,12 +146,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(9)
     fun `Assert invalid client cpf`() {
         val client = Client(
-            1,
-            "teste",
-            "teste",
-            "teste@teste.com",
-            "11111111111",
-            LocalDate.parse("2000-01-01"),
+            name = "teste",
+            lastName = "teste",
+            email = "teste@teste.com",
+            cpf = "11111111111",
+            dob = LocalDate.parse("2000-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -167,12 +162,11 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(10)
     fun `Assert invalid client dob`() {
         val client = Client(
-            1,
-            "teste",
-            "teste",
-            "teste@teste.com",
-            "925.567.530-30",
-            LocalDate.parse("2100-01-01"),
+            name = "teste",
+            lastName = "teste",
+            email = "teste@teste.com",
+            cpf = "925.567.530-30",
+            dob = LocalDate.parse("2100-01-01"),
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(client), headers)
         val entity = restTemplate.postForEntity<String>("/api/create", request)
@@ -184,13 +178,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(11)
     fun `Assert invalid address zip`() {
         val address = Address(
-            2,
-            "41770395",
-            "Rua Correta",
-            "Válida",
-            "Ap 999",
-            "Salvador",
-            "BA"
+            zip = "41770395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -202,13 +195,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(12)
     fun `Assert invalid address street`() {
         val address = Address(
-            2,
-            "41770-395",
-            "",
-            "Válida",
-            "Ap 999",
-            "Salvador",
-            "BA"
+            zip = "41770-395",
+            street = "",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -220,13 +212,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(13)
     fun `Assert invalid address area`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "",
-            "Ap 999",
-            "Salvador",
-            "BA"
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -238,13 +229,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(14)
     fun `Assert invalid address opt`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "Válida",
-            "",
-            "Salvador",
-            "BA"
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -256,13 +246,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(15)
     fun `Assert invalid address city`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "Válida",
-            "Ap 999",
-            "",
-            "BA"
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -274,13 +263,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(16)
     fun `Assert invalid address state`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "Válida",
-            "Ap 999",
-            "Salvador",
-            ""
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = ""
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -292,13 +280,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(17)
     fun `Assert valid address creation in wrong id`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "Válida",
-            "Ap 999",
-            "Salvador",
-            "BA"
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/2/addAddress", request)
@@ -310,8 +297,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(18)
     fun `Assert document without address`() {
         val document = Document(
-            3,
-            "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            url = "https://img.r7.com/images/novo-rg-sp-19082019164048588"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(document), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
@@ -323,13 +309,12 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(19)
     fun `Assert valid address creation`() {
         val address = Address(
-            2,
-            "41770-395",
-            "Rua Correta",
-            "Válida",
-            "Ap 999",
-            "Salvador",
-            "BA"
+            zip = "41770-395",
+            street = "Rua Correta",
+            area = "Válida",
+            opt = "Ap 999",
+            city = "Salvador",
+            state = "BA"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(address), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addAddress", request)
@@ -350,8 +335,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(21)
     fun `Assert invalid document add`() {
         val document = Document(
-            3,
-            "http://www.teste.com"
+            url = "http://www.teste.com"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(document), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
@@ -363,8 +347,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(22)
     fun `Assert id not found`() {
         val document = Document(
-            3,
-            "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            url = "https://img.r7.com/images/novo-rg-sp-19082019164048588"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(document), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/-1/addDocs", request)
@@ -392,8 +375,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(25)
     fun `Assert valid document add`() {
         val document = Document(
-            3,
-            "https://img.r7.com/images/novo-rg-sp-19082019164048588"
+            url = "https://img.r7.com/images/novo-rg-sp-19082019164048588"
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(document), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/addDocs", request)
@@ -414,8 +396,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(27)
     fun `Assert not found proposal`() {
         val proposalAcceptation = ProposalAcceptation(
-            1,
-            true
+            acceptation = true
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(proposalAcceptation), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/-1/acceptAccount", request)
@@ -427,8 +408,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(28)
     fun `Assert positive proposal`() {
         val proposalAcceptation = ProposalAcceptation(
-            1,
-            true
+            acceptation = true
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(proposalAcceptation), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/acceptAccount", request)
@@ -440,8 +420,7 @@ class ApplicationTest(@Autowired val restTemplate: TestRestTemplate) {
     @Order(29)
     fun `Assert negative proposal`() {
         val proposalAcceptation = ProposalAcceptation(
-            1,
-            false
+            acceptation = false
         )
         val request = HttpEntity<String>(mapper.writeValueAsString(proposalAcceptation), headers)
         val entity = restTemplate.postForEntity<String>("/api/client/1/acceptAccount", request)

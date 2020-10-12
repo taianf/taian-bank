@@ -1,4 +1,4 @@
-package br.com.taian.bank.api.model
+package br.com.taian.bank.api.model.entities
 
 import com.fasterxml.jackson.annotation.*
 import javax.persistence.*
@@ -6,11 +6,12 @@ import javax.persistence.*
 @Entity
 @Table(name = "address")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonIgnoreProperties("id")
+@JsonIgnoreProperties("id", "client")
 data class Address(
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Long = 0L,
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    val id: Long? = null,
+    @OneToOne(mappedBy = "address")
+    val client: Client? = null,
     val zip: String = "",
     val street: String = "",
     val area: String = "",

@@ -1,7 +1,7 @@
 package br.com.taian.bank.api.validation
 
 import br.com.taian.bank.api.constants.*
-import br.com.taian.bank.api.model.*
+import br.com.taian.bank.api.model.entities.*
 
 internal fun validateAddress(address: Address): ValidatedAddress {
     val invalidFields = mutableMapOf<String, String>()

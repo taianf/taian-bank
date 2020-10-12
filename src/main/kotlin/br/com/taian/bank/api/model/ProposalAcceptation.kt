@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.*
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class ProposalAcceptation(
-    var id: Long,
-    val acceptation: Boolean,
+    var id: Long? = null,
+    val acceptation: Boolean? = null,
 )

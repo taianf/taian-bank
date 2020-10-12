@@ -1,6 +1,7 @@
 package br.com.taian.bank.api.controller
 
 import br.com.taian.bank.api.model.*
+import br.com.taian.bank.api.model.entities.*
 import br.com.taian.bank.api.repository.*
 import br.com.taian.bank.api.validation.*
 import io.swagger.annotations.*
@@ -156,7 +157,7 @@ class APIController {
                     .body(Response(answer = "Client not found"))
             }
             else -> {
-                val acceptation = proposalAcceptation.acceptation
+                val acceptation = proposalAcceptation.acceptation ?: false
                 client.proposalAccepted = acceptation
                 clientRepository.save(client)
                 if (acceptation) {

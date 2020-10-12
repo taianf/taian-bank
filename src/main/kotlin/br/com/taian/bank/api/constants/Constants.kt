@@ -1,6 +1,6 @@
 package br.com.taian.bank.api.constants
 
-// Maybe move these constants to a conf file or a database
+// Talvez mover essas constantes para um arquivo de configuração ou algum banco de dados
 
 object ValidationConstants {
 
